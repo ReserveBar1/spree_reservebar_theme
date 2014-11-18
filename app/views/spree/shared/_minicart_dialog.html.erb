@@ -38,7 +38,7 @@ $(function() {
 	<div class="clearfix"></div>
 	
 	<div class="buttons">
-		<%= link_to_function t(:continue_shopping), '$("#minicart-dialog").dialog("close")', :class => 'button' %>
+		<%= link_to_function t(:continue_shopping), '$("#minicart-dialog").dialog("close")', :class => 'button', :id => 'continue-shopping' %>
     	<%= link_to t(:view_shopping_cart), cart_path, :class => 'button', :id => 'checkout-link' %>
 	</div>
 </div>
