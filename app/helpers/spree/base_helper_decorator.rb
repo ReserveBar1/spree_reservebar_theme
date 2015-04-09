@@ -74,7 +74,7 @@ Spree::BaseHelper.class_eval do
     crumbs = [content_tag(:li, link_to(t(:home) , root_path) + separator)]
     if taxon
       ancestors = taxon.ancestors
-      ancestors.delete_at(0) if ancestors.first.name == 'Type'
+      ancestors.delete_at(0) if ancestors.try(:first).try(:name) == 'Type'
       crumbs << ancestors.collect { |ancestor| content_tag(:li, link_to(ancestor.name , seo_url(ancestor)) + separator)} unless ancestors.empty?
       crumbs << content_tag(:li, content_tag(:span, link_to(taxon.name , seo_url(taxon))))
     end
