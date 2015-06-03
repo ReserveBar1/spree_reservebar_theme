@@ -12,7 +12,7 @@
   </div>
 <% end %>
 
-<% cache("#{@taxon}-#{params[:page].to_s}") do %>
+<% cache("taxon_#{@taxon.id}-#{params[:page].to_s}") do %>
 
 <% unless @taxon.description.blank? %>
 	<div style="min-height:150px;">
