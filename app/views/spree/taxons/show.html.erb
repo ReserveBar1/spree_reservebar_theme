@@ -1,36 +1,34 @@
 <% content_for :sidebar do %>
   <div data-hook="taxon_sidebar_navigation">
-<!--
-	<% if false %>
-  	<%= render :partial => 'spree/shared/taxonomies' %>
-    <%= render :partial => 'spree/shared/filters'  if @taxon.children.empty? %>
-	<% end %>
--->
-  	<% if chunk = Spree::ContentChunk.where(:kind => @taxon.permalink).first %>
-  		<%= link_to image_tag(chunk.image), chunk.link %>
-	<% end %>
+    <!--
+    <% if false %>
+      <%= render :partial => 'spree/shared/taxonomies' %>
+      <%= render :partial => 'spree/shared/filters'  if @taxon.children.empty? %>
+    <% end %>
+    -->
+    <% if chunk = Spree::ContentChunk.where(:kind => @taxon.permalink).first %>
+      <%= link_to image_tag(chunk.image), chunk.link %>
+    <% end %>
   </div>
 <% end %>
 
-<% cache("taxon_#{@taxon.id}-#{params[:page].to_s}") do %>
-
 <% unless @taxon.description.blank? %>
-	<div style="min-height:150px;">
-		<div class="taxon-image">
-			<%= image_tag @taxon.icon(:product) %>
-		</div>
-		<div class="taxon-text">
-			<h3 class="taxon-title"><%= accurate_title %></h3>
-			<br />
-			<%= @taxon.description.html_safe %>
-			<br />
-			<%= display_bookmarks @taxon.name, seo_url(@taxon), @taxon.icon ? @taxon.icon.url(:normal) : "" %>
-		</div>
-		<div style="clear:both;"></div>
-	</div>
-	<hr />
+  <div style="min-height:150px;">
+    <div class="taxon-image">
+      <%= image_tag @taxon.icon(:product) %>
+    </div>
+    <div class="taxon-text">
+      <h3 class="taxon-title"><%= accurate_title %></h3>
+      <br />
+      <%= @taxon.description.html_safe %>
+      <br />
+      <%= display_bookmarks @taxon.name, seo_url(@taxon), @taxon.icon ? @taxon.icon.url(:normal) : "" %>
+    </div>
+    <div style="clear:both;"></div>
+  </div>
+  <hr />
 <% else %>
-	<h3 class="taxon-title"><%= accurate_title %></h3>
+  <h3 class="taxon-title"><%= accurate_title %></h3>
 <% end %>
 
 <% if @taxon.children.empty? || !params[:keywords].blank? %>
@@ -41,8 +39,6 @@
   <div data-hook="taxon_children">
     <%= render :partial => 'taxon', :collection => @taxon.children %>
   </div>
-<% end %>
-
 <% end %>
 
 <%= render :partial => "seo_text" %>
