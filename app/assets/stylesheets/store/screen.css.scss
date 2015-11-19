@@ -523,6 +523,7 @@ mark {background-color: $link_text_color; color: $layout_background_color; font-
   
   .taxon-title {
     font-size: $product_list_header_font_size;
+    display: inline-block;
   }
 
   .search-results-title {
