@@ -99,14 +99,8 @@ button.navbar-toggle {
 #product-images #main-image {height:506px;}
 /* Desktop only */
 @media screen and (min-width: 1025px) {
-	body {background:url(/assets/background.jpg) no-repeat;min-width:980px;background-size:100%;}
-	.container {
-		-moz-box-shadow: 0 0 16px 5px #444;
-		-webkit-box-shadow: 0 0 16px 5px #444;
-		box-shadow: 0 0 16px 5px #444;
-		width:980px;
-	}
-		
+	body { background-size:100%; }
+	.container { width:980px; }
 }
 
 /* adjust for iPad */
