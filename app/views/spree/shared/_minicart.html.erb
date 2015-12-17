@@ -1,37 +1,47 @@
 <% @minicart_order ||= current_order(true) %>
 <div id="minicart">
   <% @body_id = 'cart' %>
-
   <% if @minicart_order.line_items.empty? %>
-
     <div data-hook="empty_minicart">
       <p><%= t(:your_cart_is_empty) %></p>
-      <p><%= link_to t(:continue_shopping), root_path, :class => 'button continue' %></p>
+      <p><%= link_to t(:continue_shopping), root_path, :class => '  button continue' %></p>
     </div>
-
   <% else %>
+    <script>
+      <% order = Spree::Order.find(session[:order_id]) %>
+      // Collect Cart Information and send to Listrak
+      (function(d) { if (document.addEventListener) document.addEventListener('ltkAsyncListener', d);
+      else {e = document.documentElement; e.ltkAsyncProperty = 0; e.attachEvent('onpropertychange', function (e) {
+      if (e.propertyName == 'ltkAsyncProperty'){d();}});}})(function() {
+        /********** Begin Custom Code **********/
+          <% order.line_items.each do |li| %>
+          <% prod = li.product %>
+          _ltk.SCA.AddItemWithLinks('<%= li.variant.sku %>', <%= li.quantity %>, '<%= li.price.to_f %>', '<%= prod.name %>', '<%= prod.images.first.attachment.url(:large) %>', '/products/<%= prod.permalink %>');
+          <% end %>
+          _ltk.SCA.Submit();
+        /********** End Custom Code **********/
+      });
+    </script>
     <div data-hook="outside_minicart_form">
-		<%= form_for @minicart_order, :url => update_cart_path, :html => {:id => 'update-minicart'}, :remote => true do |order_form| %>
+      <%= form_for @minicart_order, :url => update_cart_path, :html => {:id => 'update-minicart'}, :remote => true do |order_form| %>
         <div data-hook="inside_minicart_form">
-
           <div data-hook="minicart_items" class="clearfix">
             <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
-			<table>
-				<tr>
-					<th>Item</th>
-					<th>Qty</th>
-				</tr>
-				<%= order_form.fields_for :line_items do |item_form| %>
-                	<%= render :partial => 'spree/shared/minicart_line_items', :locals => { :variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form } %>
+            <table>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+              </tr>
+              <%= order_form.fields_for :line_items do |item_form| %>
+                <%= render :partial => 'spree/shared/minicart_line_items', :locals => { :variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form } %>
               <% end %>
             </table>
           </div>
           <div id="minicart-footer" data-hook="minicart_footer">
-          	<%= link_to t("view_shopping_cart"), cart_path, :class => 'button' %>
+            <%= link_to t("view_shopping_cart"), cart_path, :class => 'button' %>
           </div>
         </div>
-		<% end %>
+      <% end %>
     </div>
   <% end %>
-
 </div>
