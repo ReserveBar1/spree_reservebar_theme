@@ -7,21 +7,23 @@
       <p><%= link_to t(:continue_shopping), root_path, :class => '  button continue' %></p>
     </div>
   <% else %>
-    <script>
-      <% order = Spree::Order.find(session[:order_id]) %>
-      // Collect Cart Information and send to Listrak
-      (function(d) { if (document.addEventListener) document.addEventListener('ltkAsyncListener', d);
-      else {e = document.documentElement; e.ltkAsyncProperty = 0; e.attachEvent('onpropertychange', function (e) {
-      if (e.propertyName == 'ltkAsyncProperty'){d();}});}})(function() {
-        /********** Begin Custom Code **********/
-          <% order.line_items.each do |li| %>
-          <% prod = li.product %>
-          _ltk.SCA.AddItemWithLinks('<%= li.variant.sku %>', <%= li.quantity %>, '<%= li.price.to_f %>', '<%= prod.name %>', '<%= prod.images.first.attachment.url(:large) %>', '/products/<%= prod.permalink %>');
-          <% end %>
-          _ltk.SCA.Submit();
-        /********** End Custom Code **********/
-      });
-    </script>
+    <% unless controller.controller_name == "orders" && controller.action_name == "edit" %>
+      <script>
+        <% order = Spree::Order.find(session[:order_id]) %>
+        // Collect Cart Information and send to Listrak
+        (function(d) { if (document.addEventListener) document.addEventListener('ltkAsyncListener', d);
+        else {e = document.documentElement; e.ltkAsyncProperty = 0; e.attachEvent('onpropertychange', function (e) {
+        if (e.propertyName == 'ltkAsyncProperty'){d();}});}})(function() {
+          /********** Begin Custom Code **********/
+            <% order.line_items.each do |li| %>
+            <% prod = li.product %>
+            _ltk.SCA.AddItemWithLinks('<%= li.variant.sku %>', <%= li.quantity %>, '<%= li.price.to_f %>', '<%= prod.name %>', '<%= prod.images.first.attachment.url(:large) %>', '/products/<%= prod.permalink %>');
+            <% end %>
+            _ltk.SCA.Submit();
+          /********** End Custom Code **********/
+        });
+      </script>
+    <% end %>
     <div data-hook="outside_minicart_form">
       <%= form_for @minicart_order, :url => update_cart_path, :html => {:id => 'update-minicart'}, :remote => true do |order_form| %>
         <div data-hook="inside_minicart_form">
