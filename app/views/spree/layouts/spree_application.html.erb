@@ -70,7 +70,7 @@
           </aside>
         <% end %>
 
-        <div id="content" class="columns omega <% if !content_for?(:sidebar) %> sixteen alpha <% else %> twelve <% end %>" data-hook>
+        <div id="content" class="main-content columns omega <% if !content_for?(:sidebar) %> sixteen alpha <% else %> twelve <% end %>" data-hook>
           <%= short_breadcrumbs(@taxon) %>
           <%= flash_messages %>
           <%= yield %>
